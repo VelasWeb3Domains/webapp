@@ -12,8 +12,8 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" />
 <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lobibox@1.2.7/css/lobibox.css" />
 <link rel="stylesheet" href="https://unpkg.com/paginationjs@2.1.5/dist/pagination.css" />
-<link type="text/css" rel="stylesheet" href="/fonts/Fontawesome-pro/css/fontawesome.min.css" />
-<link type="text/css" rel="stylesheet" href="/fonts/Fontawesome-pro/css/all.css" />
+<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/web3fonts@1.0.0/css/fontawesome.min.css" />
+<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/web3fonts@1.0.0/css/all.min.css" />
 <link type="text/css" rel="stylesheet" href="/fonts/Poppins/fonts.css" />
 <link type="text/css" rel="stylesheet" href="/fonts/Roboto/fonts.css" />
 <link type="text/css" rel="stylesheet" href="/lib/jQuery/PluginStack/Wow-js/animate.css" />
@@ -27,9 +27,11 @@
 <script type="text/javascript" src="https://unpkg.com/paginationjs@2.1.5/dist/pagination.js"></script>
 <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@multiavatar/multiavatar/multiavatar.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery-lazy@1.7.11/jquery.lazy.min.js"></script>
 <script type="text/javascript" src="/lib/jQuery/PluginStack/Wow-js/wow.min.js"></script>
 <script type="text/javascript" src="/js/custom.js?v=2"></script>
 <script type="text/javascript" src="/networks.js?v=11000"></script>
+<script type="text/javascript" src="/contract/abi.js"></script>
 <link rel="icon" href="/favicon/favicon-32x32.png?v=3" />
 <link rel="shortcut icon" href="/favicon/favicon-32x32.png?v=3" />
 <meta name="description" property="description" content="First Velas Web3 Domains - Make a .vlx domain for yourself." />
@@ -60,6 +62,11 @@
 {
 	background-color: #0037c0!important;
 	color: #FFF!important;
+}
+
+.bootbox .btn-success{
+	background-color: #0037c0!important;
+	border-color: #0037c0!important;
 }
 .warp-result{
 	padding-top: 20px;
@@ -424,6 +431,46 @@ div[data-notify="container"] {
 	font-weight: bold
 }
 
+.wallet-ui .modal-content {
+        background: #FFF;
+        box-shadow: 0 8px 20px rgb(0 0 0 / 60%);
+    }
+
+    .wallet-ui .list-group {
+        margin: 20px 0 20px 0;
+        padding: 0;
+        width: 100%;
+        display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+		list-style: none;
+    }
+
+    .wallet-ui .wallet-adapter-item {
+        border: 1px solid #DDD;
+        border-radius: 6px;
+        color: #000;
+        cursor: pointer;
+        align-items: center;
+        padding: 60px 0;
+        margin-right: 10px;
+		margin-bottom: 7px;
+    }
+
+        .wallet-ui .wallet-adapter-item:hover {
+            background-image: linear-gradient(rgba(0,0,0,.15) 0 0);
+        }
+
+        .wallet-ui .wallet-adapter-item span {
+            font-weight: bold;
+        }
+
+        .wallet-ui .wallet-adapter-item img {
+            align-items: center;
+            justify-content: center;
+            width: 150px;
+        }
+
+
 </style>
 </head>
 <body>
@@ -438,7 +485,11 @@ div[data-notify="container"] {
 			<div class="col-md-10 col-sm-10 col-xs-12 text-mg-right">
 				<div class="menu">
 					<ul class="nav">
-						<li class="nav-item active"><a href="/"></a></li>
+						<li class="nav-item active"><a href="/">Home</a></li>
+						<li class="nav-item active"><a href="/mint">Mint Domain</a></li>
+						<li class="nav-item"><a href="/search">Bulk Search</a></li>
+						<li class="nav-item"><a href="/yourdomain">Find Your Domains</a></li>
+						<li class="nav-item"><a target='_blank' href="https://github.com/VelasWeb3Domains/velasdomainjs">Docs</a></li>
 					</ul>
 				</div>
 			</div>
@@ -453,7 +504,7 @@ div[data-notify="container"] {
 		<div class="banner-nofix">
 			<div class="container">
 				<div class="tex-center" style="margin-bottom: 30px;">
-					<a data-chain="velas" data-collection="velas-name-service" data-theme="light" id="__raregems_collection_widget" target="_blank" href="https://raregems.io/" style="display: block; width: 420px; height: 120px; margin: auto;">RareGems</a>
+					<a data-chain="velas" data-collection="velas-name-service" data-theme="light" id="__raregems_collection_widget" target="_blank" href="https://raregems.io/" style="display: block; max-width: 450px; width: 100%; height: 120px; margin: auto;">RareGems</a>
 					<script async src="https://s.raregems.io/js/collection_widget_v1.js" crossorigin integrity="sha512-jSqDoBA5LJaD+L7vU3MNV/lTP666bIX60cvu0RVXv+XOlTUp/UF4mr1mRZXJCUx59LvmMs/FpEt0S7ykm5bWag=="></script>
 				</div>
 				<div class="menu-btn" style="margin-bottom: 20px;">
@@ -473,7 +524,7 @@ div[data-notify="container"] {
 					<span style="cursor: pointer; margin-top: 10px;" class="btn btn-outline-danger btn-changenetwork">Change Metamask</span>
 				  </span>
 				</div>
-				<div class="warp-form-search" style='display:none;'>
+				<div class="warp-form-search" style='display:none; max-width: 800px; margin: 0 auto;'>
 					<div class='text-right'>
 						<span class='emoji-picker'>
 							<span class=''>Emoji Picker 🖐</span>
@@ -527,12 +578,67 @@ div[data-notify="container"] {
 		<div class="warp-mydomains" style="display:none;">
 			<div class="container">
 				<div class="mydomains">
-					<h4 class='title-support strong'>Registered <span class='total-domains'></span> domains </h4>
-					<div class='text-right'><span style="cursor:pointer;" class='btn btn-sm btn-outline-success btn-mydomain-refresh'>Update List</span></div>
-				
-					<div class='loading text-center' style='display:none; color:#70d44b'><i class='fas fa-4x fa-spinner fa-spin'></i></div>
+					<h4 class='strong' style="color: #000; margin-bottom: 15px; padding: 5px;">You have <span class='total-domains'></span> domains</h4>
+					<div class='form-group filter well' style='border-radius: 7px; margin-bottom: 10px; padding: 10px; background: #e3e3e3b3;'>
+							<div class='form-inline'>
+								<input type='text' style="margin: 5px;" placeholder="Enter keyword" class='form-control keyword' />
+								<select class="form-control ddl-domain-type" style="margin: 5px;">
+										<option value=''>- Domain Type -</option>
+										<option value='domain'>Normal domain</option>
+										<option value='emoji'>Emoji domain</option>
+										<option value='subdomain'>Sub domain</option>
+								</select>
+								<select class="form-control ddl-domain-length" style="margin: 5px;">
+										<option value=''>- Length -</option>
+										<option value='1'>01</option>
+										<option value='2'>02</option>
+										<option value='3'>03</option>
+										<option value='4'>04</option>
+										<option value='5'>05</option>
+										<option value='6'>06</option>
+										<option value='7'>07</option>
+										<option value='8'>08</option>
+										<option value='9'>09</option>
+										<option value='10'>10</option>
+										<option value='11'>11</option>
+										<option value='12'>12</option>
+										<option value='13'>13</option>
+										<option value='14'>14</option>
+										<option value='15'>15</option>
+										<option value='16'>16</option>
+										<option value='17'>17</option>
+										<option value='18'>18</option>
+										<option value='19'>19</option>
+										<option value='20'>20</option>
+										<option value='21'>21</option>
+										<option value='22'>22</option>
+										<option value='23'>23</option>
+										<option value='24'>24</option>
+										<option value='25'>25</option>
+										<option value='26'>26</option>
+										<option value='27'>27</option>
+										<option value='28'>28</option>
+										<option value='29'>29</option>
+										<option value='30'>30</option>
+								</select>
+								<select class="form-control ddl-tlds" style="margin: 5px;">
+										<option value=''>- Top Level Domain -</option>
+										<option value='vlx'>.vlx</option>
+										<option value='velas'>.velas</option>
+										<option value='web3'>.web3</option>
+										<option value='dapp'>.dapp</option>
+										<option value='asset'>.asset</option>
+								</select>
+								<span style="cursor:pointer; margin: 5px;" class='btn btn-sm btn-outline-success btn-mydomain-search'>Search</span>
+								<span style="cursor:pointer; margin: 5px;" class='btn btn-sm btn-outline-success btn-mydomain-refresh'>Refresh</span>
+								<span style="cursor:pointer; margin: 5px;" class='result-count text-right'></span>
+							</div>
+						</div>
+						
+						<div class='loading text-center' style='display:none; color:#CCC; margin-top: 20px;'><i class='fas fa-4x fa-spinner fa-spin'></i></div>
 					<div class='mydomain-show'></div>
-					<div class='mydomain-paging'><div class='paging'></div></div>
+					<div class='mydomain-paging' style="visibility: hidden"><div class='paging'></div></div>
+					<div class='mydomain-loadmore'><span style="cursor:pointer; padding: 10px 20px; border: 2px solid #DDD; border-radius: 15px; color: #333;" class='btn btn-mydomain-next'>Load more</span></div>
 				</div>
 			</div>
 	  </div>
@@ -540,13 +646,12 @@ div[data-notify="container"] {
 	<img src="/images/square-warning.png" class="img-position img-position-01" alt=""/>
 	<img src="/images/square-success.png" class="img-position img-position-02 spin-anything" alt=""/>
 </div>
-
 <div class="warp-section warp-footer">
 	<div class="container text-center">
 		<div class="warp-social">
 			<a href="https://twitter.com/VelasDomains" target="_blank" class="wow fadeInUp"><i class="fab fa-twitter"></i></a>
-			<a href="#" target="_blank" class="wow fadeInUp"><i class="fab fa-github"></i></a>
-			<a href="#" class="wow fadeInUp"><i class="fab fa-discord"></i></a>
+			<a href="https://github.com/VelasWeb3Domains" target="_blank" class="wow fadeInUp"><i class="fab fa-github"></i></a>
+			<a href="https://github.com/VelasWeb3Domains/velasdomainjs" class="wow fadeInUp"><i class="fab fa-npm"></i></a>
 		</div>
 	</div>
 </div>
@@ -570,14 +675,27 @@ div[data-notify="container"] {
 	
 	var isConnection = false;
 	
+	var connector;
+	
+	var balance;
+	
 	window.addEventListener('load', async () => {
 		//await connect();
     });
+	
 	
 	$(document).on('click', '.btn-connect-wallet', async() => {
 		await connect();
     });
 	
+	$(document).on('click', '.wallet-adapter-item', async function () {
+		var _adapter = $(this).attr('data-adapter');
+		if (_adapter != '') {
+			adapter = _adapter;
+			connect();
+			bootbox.hideAll();
+		}
+	});
 
 	$(document).on('keyup', '.txtdomain', function(){
 		var str = $(this).val().trim().toLowerCase();
@@ -634,12 +752,16 @@ div[data-notify="container"] {
     });
 	
 	const disconnect =  async () => {
-		if (!window.ethereum) {
-			notify('alert-danger', '<span class="text-danger">No Metamask (or other Web3 Provider) installed</span>');
-			return;
-		}
+		//if (!window.ethereum) {
+		//	notify('alert-danger', '<span class="text-danger">No Metamask (or other Web3 Provider) installed</span>');
+		//	return;
+		//}
 		//ethereum.on('disconnect', handler: (error: ProviderRpcError) => void);
 		
+		if (connector) {
+			await connector.disconnect();
+		};
+			
 		location.reload();
 		
 		const walletAddress = await window.ethereum.request({
@@ -665,7 +787,35 @@ div[data-notify="container"] {
 
 	};
 	
+	const selectWallet = async() => 
+	{
+		var walletconnect = "/logo/walletconnect.svg";
+		var metamask = "/logo/metamask.svg";
+		
+		var argAdapterName = ['',''];
+		var argAdapter = ['walletconnect', 'metamask'];
+		var argAdapterIcon = [walletconnect, metamask];
+		
+		var item = '';
+		var item = '';
+		$.each(argAdapter, function (i, adapter) {
+			item += "<li class='wallet-adapter-item text-center' data-adapter='" + adapter.toLowerCase() + "'><img src='" + argAdapterIcon[i] + "?v=1' /><span>" + argAdapterName[i] + "</span><br/><i style='display:none;' class='fas fa-circle-notch fa-spin'></i></li>";
+		});
+		var tmp = "<div class='select-wallet'>";
+		tmp += "<h3>Connect Wallet</h3>";
+		tmp += "<ul class='list-group'>" + item + "</ul>";
+		tmp += "</div>";
+		var dialog = bootbox.dialog({
+			message: tmp,
+			closeButton: true,
+			className: 'wallet-ui',
+			size: 'lg'
+		});
+	}
+	
+	
 	const connect =  async () => {
+	
 		if (!window.ethereum) {
 			notify('alert-danger', '<span class="text-danger">No Metamask (or other Web3 Provider) installed</span>');
 			return;
@@ -683,20 +833,25 @@ div[data-notify="container"] {
 		
 		$('.btn-connect-wallet').attr('disabled', true);
 		
+		var chainId = 106;
+		
 		window.web3 = new Web3(ethereum);
+
+		window.ethereum.on('chainChanged', () => {
+			document.location.reload();
+		});
+				  
+		window.ethereum.on('accountsChanged', () => {
+			document.location.reload();
+		});
+			
+		chainId = await web3.eth.net.getId();
+			
+		await web3.eth.requestAccounts();
 		
 		try {
-			  window.ethereum.on('chainChanged', () => {
-			  	  document.location.reload();
-			  });
 			  
-			  window.ethereum.on('accountsChanged', () => {
-			  	  document.location.reload();
-			  });
-			  
-			  await web3.eth.requestAccounts();
-			  
-			  const chainId = await web3.eth.net.getId();
+			  //const chainId = await web3.eth.net.getId();
 			  
 			  currentNetwork = getObjects(networks, "chainId", chainId)[0];
 			  
@@ -722,7 +877,7 @@ div[data-notify="container"] {
 					}
 			  });
 
-			  var abi = await fetchABI();
+			  //var abi = await fetchABI();
 			
 			  try{
 				  contractFirst = new web3.eth.Contract(
@@ -750,9 +905,14 @@ div[data-notify="container"] {
 			  
 			  currentAddress = _currentAddress.toString();
 			  
-			  var _balance = await web3.eth.getBalance(currentAddress);
+			  try{
 			  
-			  balance = parseFloat(web3.utils.fromWei(_balance)).toFixed(3);
+				var _balance = await web3.eth.getBalance(currentAddress);
+			  
+				balance = parseFloat(web3.utils.fromWei(_balance)).toFixed(3);
+
+			  }catch{}
+			  
 			  
 			  // check reverseOf
 			  try{
@@ -784,7 +944,7 @@ div[data-notify="container"] {
 			  
 			  $('.btn-connect-wallet  i.fa-spin').hide();
 			  
-			   $('.warp-form-search').show();
+			  $('.warp-form-search').show();
 			  
 			  preInit();
 			  
@@ -856,7 +1016,7 @@ div[data-notify="container"] {
 			closeButton: true,
 			size: 'large',
 			onHide: function(e) {
-				myDomains(currentAddress);
+				myDomains(currentAddress, false);
 			} 
 		});
 		
@@ -884,7 +1044,7 @@ div[data-notify="container"] {
 		});
 	}
 	
-	const confirmNFTAvatar = (obj) => {
+	const confirmNFTAvatar = async(obj) => {
 		var domain = obj.domain;
 		var tokenId = obj.tokenId;
 		var key = "avatar";
@@ -892,6 +1052,21 @@ div[data-notify="container"] {
 		if (base64 == ''){
 			return;
 		}
+		
+		var owner = '';
+		try {
+			owner = await contractFirst.methods.getOwner(domain).call();
+		} catch (e) {
+		}
+		
+		if (owner == ''){
+			return;
+		}
+		
+		if (owner !== currentAddress){
+			return;
+		}
+		
 		
 		$('.btn-confirm-avatar i').show();
 		
@@ -902,7 +1077,8 @@ div[data-notify="container"] {
 		objnew.key = 'avatar';
 		objnew.tokenId = tokenId;
 		objnew.base64 = base64;
-
+		objnew.host = "https://app.velas.domains";
+		objnew.owner = owner;
 		$.ajax({
 			type: "POST",
 			url: "/api/nftdomains/setavatar",
@@ -953,7 +1129,7 @@ div[data-notify="container"] {
 		var tokenId = obj.tokenId;
 		var temp = '<div class="warp-setavatar text-center">';
 		temp += '<div class="setavatar text-center">';
-		temp += '<div class="setdomain">' + domain + '</div>';
+		temp += '<div class="setdomain" style="text-shadow: 2px 2px #999;">' + domain + '</div>';
 		temp += '<div class="setselectimage"><span class="btn btn-outline-success btn-sm btn-file"><input type="file" class="takePictureField" id="takePictureField"><label for="takePictureField">Select Image</label></span></div>';
 		temp += '<div class="setyoupic"></div>';
 		temp += '</div>';
@@ -965,10 +1141,10 @@ div[data-notify="container"] {
 			title: 'Set NFT Avatar',
 			message: '<div class="text-center">' + temp + '</div>',
 			closeButton: true,
-			size: 'large',
+			size: 'extra-large',
 			onEscape: true,
 			onHide: function(e) {
-				myDomains(currentAddress);
+				myDomains(currentAddress, true);
 			} 
 		});
 	}
@@ -978,7 +1154,7 @@ div[data-notify="container"] {
 		var tokenId = obj.tokenId;
 		var to = obj.to;
 		var dialog = bootbox.dialog({
-			title: 'Comfirm transfer ' + domain,
+			title: 'Confirm transfer ' + domain,
 			message: '<p class="text-center">Transfer <strong>' + domain + '</strong> to <strong>' + to + '</strong><br/>Please wait while we do something... and do not close the browser.<br/><br/> <i class="fas fa-4x fa-spinner fa-spin"></i></p>',
 			closeButton: true,
 			className: 'modal-custom',
@@ -1019,7 +1195,7 @@ div[data-notify="container"] {
 		var image = obj.image;
 		var temp = '<div class="warp-setavatar text-center">';
 		temp += '<div class="sendform text-left">';
-		temp += "<div class='form-group nftpreview'><img src='" + image + "' /> <span class='strong'>" + domain + "</span></div>";
+		temp += "<div class='form-group nftpreview'><img src='" + image + "' style='display:none;' /> <span class='strong'>" + domain + "</span></div>";
 		//temp += "<div class='form-group'><label>TokenId: </label><input type='text' class='form-control tokenid' value='" + tokenId + "' disabled /></div>";
 		temp += "<div class='form-group'><label>From: </label><input type='text' class='form-control from_address' value='" + currentAddress + "' disabled /></div>";
 		temp += "<div class='form-group'><label>To (Recipient): </label><input type='text' placeholder='Enter address or domain name' class='form-control to_address' value='' /><input type='hidden' class='to_hidden_address' /></div><div class='to_reverse' style='display:none;clear:both;'></div>";
@@ -1034,10 +1210,72 @@ div[data-notify="container"] {
 			size: 'extra-large',
 			onEscape: true,
 			onHide: function(e) {
-				myDomains(currentAddress);
+				myDomains(currentAddress, true);
 			} 
 		});
 	}
+	
+	const subdomainComfirm = async (obj) => {
+		var domain = obj.domain;
+		var tokenId = obj.tokenId;
+		var subdomain = obj.subdomain;
+		var dialog = bootbox.dialog({
+			title: 'Confirm: ' + subdomain + '.' + domain + '',
+			message: '<p class="text-center">Create sub domain: <strong>' + subdomain + '.' + domain + '</strong><br/>Please wait while we do something... and do not close the browser.<br/><br/> <i class="fas fa-4x fa-spinner fa-spin"></i></p>',
+			closeButton: true,
+			className: 'modal-custom',
+			size: 'large',
+			onHide: function(e) {
+				$('.btn-subdomain-comfirm i').hide();
+				$('.btn-subdomain-comfirm').attr('disabled', false);
+			}
+		});
+		
+		web3.eth.sendTransaction({
+				from: currentAddress,
+				to: currentNetwork.contactAddress,
+				value: 0,
+				data: contractFirst.methods.registerSubDomain(currentAddress, tokenId, subdomain).encodeABI()
+			}, (err, transactionId) => {
+			  if  (err) {
+					dialog.init(function(){
+						setTimeout(function(){
+							dialog.find('.bootbox-body').html('<p class="text-center mb-0" style="color:red;">Transaction failed, ' + err.message + '</p>');
+						}, 2000);
+					});
+				  } else {
+				  
+					var explorer = currentNetwork.blockExplorerUrls[0] + "tx/" + transactionId;
+					dialog.init(function(){
+						setTimeout(function(){
+							dialog.find('.bootbox-body').html('<p class="text-center" style="color:green;">Transfer successful<br/><br/><a class="btn btn-outline-secondary" href="' + explorer + '" target="_blank">View Your Transaction</a></p>');
+						}, 4000);
+					});
+				 }
+		});
+	}
+	
+	const subdomainForm = (obj) => {
+		var domain = obj.domain;
+		var tokenId = obj.tokenId;
+		var temp = '<div class="warp-setavatar text-center">';
+		temp += '<div class="sendform text-left">';
+		temp += "<div class='form-group'><div class='form-inline'><input style='width: 250px;' type='text' placeholder='Enter subdomain' class='form-control txtsubdomain' value='' /><span>." + domain + "</span></div></div>";
+		temp += "<div class='form-group'><button class='btn btn-success btn-lg btn-subdomain-comfirm'><i class='fas fa-spinner fa-spin' style='display:none;'></i>Create Now</button></div>";
+		temp += '</div>';
+		temp += "<input type='hidden' class='hiddenDomainInfos' value='" + JSON.stringify(obj) + "' />";
+		var dialog = bootbox.dialog({
+			title: 'Create sub domain for ' + domain,
+			message: '<div class="text-center">' + temp + '</div>',
+			closeButton: true,
+			size: 'extra-large',
+			onEscape: true,
+			onHide: function(e) {
+				myDomains(currentAddress, true);
+			} 
+		});
+	}
+	
 	
 	
 	const searchDomain = async (domain) => {
@@ -1143,7 +1381,7 @@ div[data-notify="container"] {
 		
 		var isBuy = false;
 		
-		var tlds = [".vlx",".velas",".web3",".dapp"];
+		var tlds = [".vlx",".velas",".web3",".dapp",".asset"];
 		
 		var temp = '';
 		
@@ -1338,7 +1576,7 @@ div[data-notify="container"] {
 			closeButton: true,
 			size: 'large',
 			onHide: function(e) {
-				myDomains(currentAddress);
+				myDomains(currentAddress, true);
 			} 
 		});
 		
@@ -1368,89 +1606,247 @@ div[data-notify="container"] {
 		});
 	};
 
-	const myDomainLoad = async (address, data) => {
-	
-		$('.mydomain-show').html('');
-		
-		$('.loading').show();
-		
-		var tokens = [];
+	var dataSource = [];
 
-		for (i = 0; i < data.length; i++) 
-		{
-			var tokenId = await contractFirst.methods.tokenOfOwnerByIndex(address, data[i]).call();
-			try{
-				var domain = await contractFirst.methods._tokenURIs(tokenId).call();
-				var obj = new Object();
-				obj.owner = address;
-				obj.tokenId = tokenId;
-				obj.domain = domain;
-				tokens.push(obj);
-			}catch{}
-		};
-		
-		if (tokens.length > 0){
+	var balance = 0;
+	
+	
+	const myDomainLoad = async (address, data) => {		
+		if (data.length > 0){
 		
 			$('.loading').hide();
 			
 			$('.warp-mydomains').show();
 			
 			const d = new Date();
-			var t =d.getTime();
+			var t = d.getTime();
 			
-			$.each(tokens, function(index, obj){
-				var endpoint = '/api/nftdomains/metadata/' + obj.domain;
-				$.getJSON(endpoint, function(result) {   
-					var name = result.name;
-					var image = result.image + '?t=' + t;
-					var symbol = result.symbol;
-					var btnlbl = 'Set Primary';
-					var isremove = "false";
-					if (name == domainReverse){
-						btnlbl = "Remove Primary";
-						isremove = "true";
-					}
-					obj.image = image;
-					var temp = "<div class='mydomain-item'><a target='_blank' href='" + image + "'><img style='width: 100%;' src='" + image + "' /></a>";
-					temp += "<div style='cursor:pointer; margin-top: 5px;' data-domain='" + name + "' class='btn btn-sm btn-outline-success btn-set-reverse'>" + btnlbl + "</div>";
-					temp += "<div style='cursor:pointer; margin-top: 5px; display:none;' data-obj='" + JSON.stringify(obj) + "' class='btn btn-sm btn-outline-success btn-set-avatar'>Set Avatar</div>";
-					temp += "<div style='cursor:pointer; margin-top: 5px;' data-obj='" + JSON.stringify(obj) + "' class='btn btn-sm btn-outline-success btn-send'>Send Domain</div>";
-					$('.mydomain-show').append(temp);
-				});
+			$.each(data, function(index, obj){
+				var tokenUrl = currentNetwork.blockExplorerUrls[0] + '/token/' + currentNetwork.contactAddress + '/instance/' + obj.tokenId + '/token-transfers';
+				var name = obj.domain;
+				var image = '';
+				if (obj.image !== undefined){
+					image = obj.image;
+				}
+				var btnlbl = 'Set Primary';
+				var isremove = "false";
+				if (name == domainReverse){
+					btnlbl = "Remove Primary";
+					isremove = "true";
+				}
+				
+				var temp = "<div class='mydomain-item'>";
+				temp += "<div class=''><a target='_blank' style='text-decoration: none;' href='" + tokenUrl + "'><img class='domain-image lazy' data-src='" + image + "' src='/images/spinner.gif?v=1' data-domain='" + name + "' style='width: 100%;' /><p style='margin-top: 10px;'>" + name + "</p></a></div>";
+				//temp += "<div style='cursor:pointer; margin-top: 5px;' data-obj='" + JSON.stringify(obj) + "'title='Remove NFT Avatar' class='btn btn-remove-avatar'><i class='fas fa-trash-alt'></i></div>";
+				temp += "<div class='mydomain-item-tokenId' style='display:none;'>tokenId: " + obj.tokenId + "</div>";
+				temp += "<div style='cursor:pointer; margin-top: 5px;' data-domain='" + name + "' data-remove='" + isremove + "' class='btn btn-sm btn-outline-success btn-set-reverse'>" + btnlbl + "</div>";
+				temp += "<div style='cursor:pointer; margin-top: 5px;' data-obj='" + JSON.stringify(obj) + "' class='btn btn-sm btn-outline-success btn-set-avatar'>Set Avatar</div>";
+				temp += "<div style='cursor:pointer; margin-top: 5px;' data-obj='" + JSON.stringify(obj) + "' class='btn btn-sm btn-outline-success btn-send'>Send Domain</div>";
+				var num = name.match(/\./g).length;
+				if (num == 1){
+					temp += "<div style='cursor:pointer; margin-top: 5px;' data-obj='" + JSON.stringify(obj) + "' class='btn btn-sm btn-outline-success btn-subdomain'>Create Subdomain</div>";
+				}
+				temp += "</div>";
+				
+				$('.mydomain-show').append(temp);
+				
+				if (image == ''){
+					var endpoint = '/api/nftdomains/metadata/' + name;
+					$.getJSON(endpoint, function(result) {   
+						var image = result.image + '?t='+ t;
+						$('.domain-image[data-domain="' + name + '"]').attr('data-src', image);
+						obj.image = image;
+					});
+				}
 			});
+			
+			setTimeout(function()
+			{
+				 $('.lazy').Lazy({
+					scrollDirection: 'both',
+					effect: 'fadeIn',
+					visibleOnly: true,
+					removeAttribute: true
+				});
+			}, 1500);
 		}
 	};
 
-	const myDomains = async (address) => {
+	const myDomains = async (address, refresh) => {
 	
 		$('.warp-mydomains').show();
 		
 		$('.mydomain-show').html('');
 		
-		var balance = await contractFirst.methods.balanceOf(address).call();
+		$('.result-count').html('');
 		
-		$('.total-domains').html(balance);
+		$('.loading').show();
 		
-		var pageSize = 15;
-		var totalNumber = balance;
-		var dataSource = [];
-		for (i = 0; i < balance; i++) {
-			dataSource.push(i);
+		if (refresh == true){
+			dataSource = [];
+			dataSourceNew = [];
+			isSearch = false;
+			$('.keyword').val('');
+			$('.ddl-characters-type').val('');
+			$('.ddl-tlds').val('');
+			$('.mydomain-show').html('');
+			$('.total-domains').html('');
 		}
 		
-		$('.paging').pagination({
-			dataSource: dataSource,
-			totalNumber: balance,
-			pageSize: pageSize,
-			showPrevious: true,
-			showNext: true,
-			className: 'paginationjs-pages justify-content-center',
-			showGoInput: true,
-			showGoButton: true,
-			callback: function(data, pagination) {
-				myDomainLoad(address, data);
+		if (dataSource.length == 0)
+		{
+			balance = await contractFirst.methods.balanceOf(address).call();
+		
+			$('.total-domains').html(balance);
+		
+			try{
+				const arg = await contractFirst.methods.getDomainbyAddress(address).call();
+		
+				var domains =  arg.domains;
+			
+				var tokenIds  = arg.tokenIds;	
+				
+				for (i = 0; i < domains.length; i++) 
+				{
+					const tld = domains[i].split('.').pop();
+					var obj = new Object();
+					obj.owner = address;
+					obj.tokenId = tokenIds[i];
+					obj.domain = domains[i];
+					obj.domainless = domains[i].replace('.' + tld, '');
+					obj.tld = tld;
+					dataSource.push(obj);
+				}
+			}catch(err) {
+				notify('alert-danger', '<span class="text-danger">Error: ' + err.toString() + '</span>');
+				return;
 			}
-		});
+		}
+		
+		var dataSourceNew = dataSource;
+			
+		var keyword = $('.keyword').val().trim().toLowerCase();
+		
+		var domain_type = $('.ddl-domain-type').val();
+		
+		var domain_length = $('.ddl-domain-length').val();
+		
+		var tlds = $('.ddl-tlds').val();
+		
+		if (keyword.length > 0)
+		{
+			
+			var dataSourceTemp = [];
+			$.each(dataSourceNew, function(i, obj) {
+				var result = obj.domainless.indexOf(keyword);
+				if (result >= 0){
+					dataSourceTemp.push(obj);
+				}
+			});
+			
+			dataSourceNew = dataSourceTemp;
+		}
+		
+		if (domain_type.length > 0)
+		{
+			const emojiRegex = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/gi;
+			var dataSourceTemp = [];
+			$.each(dataSourceNew, function(i, obj) {
+				var isOK = false;
+				switch(domain_type) {
+				 case 'domain':
+					var isEmoji = emojiRegex.test(obj.domainless);
+					var num = obj.domain.match(/\./g).length;
+					if (num == 1 && isEmoji == false){
+						isOK = true;
+					}
+					break;
+				 case 'emoji':
+					isOK = emojiRegex.test(obj.domainless);
+					break;
+				case 'subdomain':
+					var num = obj.domain.match(/\./g).length;
+					if (num > 1){
+						isOK = true;
+					}
+					break;
+				  default:
+
+				}
+				
+				if (isOK == true){
+					dataSourceTemp.push(obj);
+				}
+			});
+			
+			dataSourceNew = dataSourceTemp;
+		}
+		
+		if (domain_length > 0){
+			var dataSourceTemp = [];
+			$.each(dataSourceNew, function(i, obj) {
+				if (obj.domainless.length == domain_length){
+					dataSourceTemp.push(obj);
+				}
+			});
+			
+			dataSourceNew = dataSourceTemp;
+		}
+		
+		if (tlds.length > 0)
+		{
+			var dataSourceTemp = [];
+			$.each(dataSourceNew, function(i, obj) {
+				if (tlds == obj.tld){
+					dataSourceTemp.push(obj);
+				}
+			});
+			
+			dataSourceNew = dataSourceTemp;
+		}
+		
+		$('.result-count').html(dataSourceNew.length + ' results');
+		
+		var pageSize = 20;
+		
+		var totalNumber = dataSourceNew.length;
+		
+		var container = $('.paging');
+		if (totalNumber > 0){
+			container.pagination({
+				dataSource: dataSourceNew,
+				totalNumber: totalNumber,
+				pageSize: pageSize,
+				showPrevious: true,
+				showNext: true,
+				className: 'paginationjs-pages justify-content-center',
+				showGoInput: true,
+				showGoButton: true,
+				callback: function(data, pagination) {
+					myDomainLoad(address, data);
+				}
+			});
+			
+		}
+		else{
+		
+			$('.loading').hide();
+			
+			$('.warp-mydomains').show();
+			
+			$('.mydomain-show').html('<p class="text-center">No items found for this search</p>');
+		}
+		
+		$(document).on('scroll', onScroll);
+		
+		function onScroll(event){  
+			var next = $('.btn-mydomain-next');
+			var scrollPos = $(document).scrollTop() + 300;       
+			var position = next.position().top - 300;   
+			if (position <= scrollPos) {
+				container.pagination('next');
+			}
+		}
 	};
 	
 	const preInit = () => 
@@ -1593,9 +1989,14 @@ div[data-notify="container"] {
 				}
 		  });
 		  
-		  $(document).on('click', '.btn-mydomain-refresh', function(e){
-				myDomains(currentAddress, 'true');
+		  $(document).on('click', '.btn-mydomain-refresh', async function(e){
+				await myDomains(currentAddress, true);
 		  });
+		  
+		  $(document).on('click', '.btn-mydomain-search', async function(e){
+				await myDomains(currentAddress, false);
+		  });
+		  
 		  
 		  $(document).on('click', '.btn-set-reverse', async function(){
 				var domain = $(this).attr('data-domain');
@@ -1749,7 +2150,46 @@ div[data-notify="container"] {
 				$('.btn-transfer-comfirm').attr('disabled', false);
 		  });
 		  
-		  myDomains(currentAddress,'');
+		   $(document).on('click', '.btn-subdomain-comfirm', async function(){
+				var str = $('.hiddenDomainInfos').val();
+				var subdomain = $('.txtsubdomain').val().trim().toLowerCase();
+			
+				if (subdomain.length < 2)
+				{
+					notify('danger', '<span class="text-danger">sub domain requires at least 2 characters</span>');
+					return;
+				}
+				
+				var obj = JSON.parse(str);
+				if(obj == null){
+					return;
+				}
+				
+				$('.btn-subdomain-comfirm i').show();
+		
+				$('.btn-subdomain-comfirm').attr('disabled', true);
+				
+				obj.subdomain = fixDomain(subdomain);
+				
+				subdomainComfirm(obj);
+		  });
+		
+		  $(document).on('click', '.btn-subdomain', async function(){
+			
+				var str = $(this).attr('data-obj');
+				if (str == ''){
+					return;
+				}
+				
+				var obj = JSON.parse(str);
+				if(obj == null){
+					return;
+				}
+				
+				subdomainForm(obj);
+		  });
+		  
+		  myDomains(currentAddress, true);
     };
 	
 	
